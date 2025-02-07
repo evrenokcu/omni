@@ -1,0 +1,6 @@
+[submodule "omni-modules"]
+	path = omni-modules
+	url = git@github.com:evrenokcu/omni-modules.git
+[submodule "omni-view-aggr3"]
+	path = omni-view-aggr3
+	url = git@github.com:evrenokcu/omni-view-aggr3.git

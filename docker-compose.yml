@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  pricing:
+    build:
+      context: ./omni-modules
+      dockerfile: PricingDockerfile
+    environment:
+      - PORT=${PRICING_PORT}
+    ports:
+      - "8001:${PRICING_PORT}"
+    env_file:
+      - .env
+    volumes:
+      - ./omni-modules/cache:/price
+  aggr3:
+    build:
+      context: ./omni-modules
+      dockerfile: Aggr3Dockerfile
+    environment:
+      - PORT=${BACKEND_PORT}
+    ports:
+      - "8000:${BACKEND_PORT}"
+    depends_on:
+      - pricing
+    env_file:
+      - .env
+    volumes:
+      - ./omni-modules/cache:/price
+  view:
+    build:
+      context: ./omni-view-aggr3
+      dockerfile: Dockerfile
+    ports:
+      - "3000:${FRONTEND_PORT}"
+    depends_on:
+      - aggr3
+      - pricing
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - REST_API_URL=http://aggr3:${BACKEND_PORT}
+    volumes:
+      - ./omni-modules/cache:/price

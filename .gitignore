@@ -1,0 +1,5 @@
+envomni
+.env
+.codegpt
+cache/
+backup/
